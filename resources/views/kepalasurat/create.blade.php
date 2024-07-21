@@ -1,62 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Kepalasurat</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body style="background: white">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Add New Kepalasurat</div>
-                    <div class="card-body">
-                        <form action="{{ route('kepalasurat.store') }}" method="POST">
-                            @csrf
-                            <div class="form-group mb-3">
-                                <label for="user_id">User</label>
-                                <select name="user_id" class="form-control" id="user_id" required>
-                                    <option value="">Select User</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->username }}</option>
-                                    @endforeach
-                                </select>
-                                @error('user_id')
-                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="nama_kop">Nama Kop</label>
-                                <input type="text" name="nama_kop" class="form-control" id="nama_kop" placeholder="Enter Nama Kop" value="{{ old('nama_kop') }}" required>
-                                @error('nama_kop')
-                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="alamat_kop">Alamat Kop</label>
-                                <textarea name="alamat_kop" class="form-control" id="alamat_kop" placeholder="Enter Alamat Kop" required>{{ old('alamat_kop') }}</textarea>
-                                @error('alamat_kop')
-                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="nama_tujuan">Nama Tujuan</label>
-                                <input type="text" name="nama_tujuan" class="form-control" id="nama_tujuan" placeholder="Enter Nama Tujuan" value="{{ old('nama_tujuan') }}" required>
-                                @error('nama_tujuan')
-                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <button type="submit" class="btn btn-primary">Create Kepalasurat</button>
-                            <a href="{{ route('kepalasurat.index') }}" class="btn btn-secondary">Back to List</a>
-                        </form>
+@extends('template.app')
+
+@section('content')
+<div class="section-header">
+    <h1>Tambah Kepala Surat</h1>
+    <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="#">Kepala Surat</a></div>
+        <div class="breadcrumb-item">Tambah Kepala Surat</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('kepalasurat.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="id_kop">Id Kop:</label>
+                        <input type="number" class="form-control" id="id_kop" name="id_kop" value="{{ old('id_kop') }}" required>
+                        @error('id_kop')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="nama_kop">Nama Kop:</label>
+                        <input type="text" class="form-control" id="nama_kop" name="nama_kop" value="{{ old('nama_kop') }}" required>
+                        @error('nama_kop')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat_kop">Alamat Kop:</label>
+                        <input type="text" class="form-control" id="alamat_kop" name="alamat_kop" value="{{ old('alamat_kop') }}" required>
+                        @error('alamat_kop')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tujuan">Nama Tujuan:</label>
+                        <input type="text" class="form-control" id="nama_tujuan" name="nama_tujuan" value="{{ old('nama_tujuan') }}" required>
+                        @error('nama_tujuan')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="id_user">Id User:</label>
+                        <select class="form-control" id="id_user" name="id_user" required>
+                            <option value="">Pilih Id</option>
+                            @foreach ($pengguna as $data_pengguna)
+                                <option value="{{ $data_pengguna->id }}" {{ old('id_user') == $data_pengguna->id ? 'selected' : '' }}>
+                                    {{ $data_pengguna->id_user }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_user')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/app.js') }}"></script>
-</body>
-</html>
+</div>
+@endsection

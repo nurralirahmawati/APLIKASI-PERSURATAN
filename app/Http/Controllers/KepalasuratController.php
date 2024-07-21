@@ -2,53 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kepalasurat;
-use App\Models\User;
+use App\Models\KepalaSurat;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use PhpParser\Node\Expr\Cast\String_;
 
-class KepalasuratController extends Controller
+class KepalaSuratController extends Controller
 {
-    public function create()
+    public function index(): View
     {
-        $users = User::all();
-        return view('kepalasurat.create', compact('users'));
+        $kepalasurat = KepalaSurat::latest()->paginate(10);
+        return view('kepalasurat.index', compact('kepalasurat'));
     }
 
-    public function store(Request $request)
+    public function create(): View
     {
-        $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'nama_kop' => 'required|string|max:250',
-            'alamat_kop' => 'required|string',
-            'nama_tujuan' => 'required|string|max:200',
+        $pengguna = Pengguna::all();
+        return view('kepalasurat.create', compact('pengguna'));
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'id_kop' => 'required|integer|unique:kepala_surat,id',
+            'nama_kop' => 'required|min:5',
+            'alamat_kop' => 'required|min:5',
+            'nama_tujuan' => 'required|min:5',
+            'id_user' => 'required|exists:pengguna,id',
+        ]);
+        KepalaSurat::create([
+            'id_kop' => $request->id_kop,
+            'nama_kop' => $request->nama_kop,
+            'alamat_kop' => $request->alamat_kop,
+            'nama_tujuan' => $request->nama_tujuan,
+            'id_user' => $request->id_user,
+            
         ]);
 
-        Kepalasurat::create([
-            'user_id' => $validatedData['user_id'],
-            'nama_kop' => $validatedData['nama_kop'],
-            'alamat_kop' => $validatedData['alamat_kop'],
-            'nama_tujuan' => $validatedData['nama_tujuan'],
+        return redirect()->route('kepalasurat.index')->with('success', 'User berhasil ditambahkan!');
+    }
+
+    public function edit(string $id): View
+    {
+        $kepalasurat = KepalaSurat::findOrFail($id);
+        $pengguna = Pengguna::all();
+        return view('kepalasurat.edit', compact('kepalasurat', 'pengguna'));
+    }
+
+    public function update(Request $request, $id): RedirectResponse
+    {
+        $kepalasurat = KepalaSurat::findOrFail($id);
+        $request->validate([
+            'id_kop' => 'required|integer|unique:kepala_surat,id',
+            'nama_kop' => 'required|min:5',
+            'alamat_kop' => 'required|min:5',
+            'nama_tujuan' => 'required|min:5',
+            'id_user' => 'required|exists:pengguna,id',
         ]);
 
-        return redirect()->route('kepalasurat.index')->with('success', 'Kepalasurat created successfully.');
+        $kepalasurat->update([
+            'id_kop' => $request->id_kop,
+            'nama_kop' => $request->nama_kop,
+            'alamat_kop' => $request->alamat_kop,
+            'nama_tujuan' => $request->nama_tujuan,
+            'id_user' => $request->id_user,
+            
+            ]);
+
+        return redirect()->route('kepalasurat.index')->with(['success' => 'Data Berhasil Diubah!']);
     }
 
-    public function index()
+    public function destroy(String $id): RedirectResponse
     {
-        $kepalasurats = Kepalasurat::with('user')->get();
-        return view('kepalasurat.index', compact('kepalasurats'));
-    }
-
-    public function show(Kepalasurat $kepalasurat)
-    {
-        return view('kepalasurat.show', compact('kepalasurat'));
-    }
-    
-    public function destroy($id)
-    {
-        $kepalasurat = Kepalasurat::findOrFail($id);
+        $kepalasurat = KepalaSurat::findOrFail($id);
         $kepalasurat->delete();
-        
-        return redirect()->route('kepalasurat.index')->with('success', 'Kepalasurat deleted successfully.');
+        return redirect()->route('kepalasurat.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 }

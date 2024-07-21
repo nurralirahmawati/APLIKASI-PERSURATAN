@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="section-header">
-    <h1>Halaman Kepala Surat</h1>
+    <h1>Halaman Pengguna</h1>
     <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="#">Dasbor</a></div>
         <div class="breadcrumb-item"><a href="#">Tata Letak</a></div>
@@ -13,7 +13,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <a href="{{ route('kepalasurat.create') }}" class="btn btn-md btn-info mb-3">TAMBAH</a>
+                <a href="{{ route('pengguna.create') }}" class="btn btn-md btn-info mb-3">TAMBAH</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -21,24 +21,26 @@
                         <thead>
                             <tr>
                                 <th scope="col">No</th>
-                                <th scope="col">Id Kop</th>
-                                <th scope="col">Nama Kop</th>
-                                <th scope="col">Nama Tujuan</th>
                                 <th scope="col">Id User</th>
+                                <th scope="col">User Name</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Nama Petugas</th>
                                 <th scope="col" style="width: 20%">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($kepalasurat as $index => $data_kepalasurat)
+                            @forelse ($pengguna as $index => $data_pengguna)
                             <tr>
                                 <td class="text-center">{{ $index + 1 }}</td>
-                                <td>{{ $data_kepalasurat->id_kop }}</td>
-                                <td>{{ $data_kepalasurat->nama_kop }}</td>
-                                <td>{{ $data_kepalasurat->nama_tujuan }}</td>
-                                <td>{{ $data_kepalasurat->pengguna->id_user }}</td>
+                                <td>{{ $data_pengguna->id_user }}</td>
+                                <td>{{ $data_pengguna->username }}</td>
+                                <td>{{ $data_pengguna->password }}</td>
+                                <td>{{ $data_pengguna->status }}</td>
+                                <td>{{ $data_pengguna->nama_ptgs }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('kepalasurat.edit', $data_kepalasurat->id) }}" class="btn btn-sm btn-primary">EDIT</a>
-                                    <form action="{{ route('kepalasurat.destroy', $data_kepalasurat->id) }}" method="POST" style="display:inline;">
+                                    <a href="{{ route('pengguna.edit', $data_pengguna->id) }}" class="btn btn-sm btn-primary">EDIT</a>
+                                    <form action="{{ route('pengguna.destroy', $data_pengguna->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda Yakin ?');">HAPUS</button>
@@ -55,7 +57,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                    {{-- {{ $kepalasurat->links() }} --}}
+                    {{-- {{ $pengguna->links() }} --}}
                 </div>
             </div>
         </div>

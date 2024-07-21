@@ -1,49 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit Kepalasurat</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Edit Kepalasurat</div>
-                    <div class="card-body">
-                        <form action="{{ route('kepalasurat.update', $kepalasurat->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group mb-3">
-                                <label for="user_id">User</label>
-                                <select name="user_id" class="form-control" id="user_id" required>
-                                    @foreach ($users as $user)
-                                        <option value="{{ $user->id }}" {{ $user->id == $kepalasurat->user_id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="nama_kop">Nama Kop</label>
-                                <input type="text" name="nama_kop" class="form-control" id="nama_kop" value="{{ $kepalasurat->nama_kop }}" required>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="alamat_kop">Alamat Kop</label>
-                                <textarea name="alamat_kop" class="form-control" id="alamat_kop" rows="3" required>{{ $kepalasurat->alamat_kop }}</textarea>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="nama_tujuan">Nama Tujuan</label>
-                                <input type="text" name="nama_tujuan" class="form-control" id="nama_tujuan" value="{{ $kepalasurat->nama_tujuan }}" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Update Kepalasurat</button>
-                            <a href="{{ route('kepalasurat.index') }}" class="btn btn-secondary">Back to List</a>
-                        </form>
+@extends('template.app')
+
+@section('content')
+<div class="section-header">
+    <h1>Tambah Kepala Surat</h1>
+    <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="#">Kepala Surat</a></div>
+        <div class="breadcrumb-item">Tambah Kepala Surat</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="{{ route('kepalasurat.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="id_kop">Id Kop:</label>
+                        <input type="number" class="form-control" id="id_kop" name="id_kop" value="{{ old('id_kop') }}" required>
+                        @error('id_kop')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="nama_kop">Nama Kop:</label>
+                        <input type="text" class="form-control" id="nama_kop" name="nama_kop" value="{{ old('nama_kop') }}" required>
+                        @error('nama_kop')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat_kop">Alamat Kop:</label>
+                        <input type="text" class="form-control" id="alamat_kop" name="alamat_kop" value="{{ old('alamat_kop') }}" required>
+                        @error('alamat_kop')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="nama_tujuan">Nama Tujuan:</label>
+                        <input type="text" class="form-control" id="nama_tujuan" name="nama_tujuan" value="{{ old('nama_tujuan') }}" required>
+                        @error('nama_tujuan')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="pengguna_id">Id User:</label>
+                        <select class="form-control" id="pengguna_id" name="pengguna_id" required>
+                            <option value="">Pilih Id</option>
+                            @foreach ($pengguna as $data_pengguna)
+                                <option value="{{ $data_pengguna->id }}" {{ old('pengguna_id') == $data_pengguna->id ? 'selected' : '' }}>
+                                    {{ $data_pengguna->pengguna_id }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('pengguna_id')
+                        <div class="alert alert-danger mt-2">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

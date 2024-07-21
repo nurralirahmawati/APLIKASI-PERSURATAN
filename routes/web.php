@@ -1,16 +1,14 @@
 <?php
 
-use App\Http\Controllers\NamatandatanganController;
-use App\Http\Controllers\KepalasuratController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+Route::resource('/pengguna', \App\Http\Controllers\PenggunaController::class);
+Route::resource('/kepalasurat', \App\Http\Controllers\KepalaSuratController::class);
+Route::resource('/namatandatgn', \App\Http\Controllers\NamaTandaTgnController::class);
+Route::resource('/suratkeluar', \App\Http\Controllers\SuratKeluarController::class);
+Route::resource('/suratmasuk', \App\Http\Controllers\SuratMasukController::class);
 
-Route::resource('user', UserController::class);
-Route::get('/user/profile/{id}', [UserController::class, 'tampilData'])->name('user.profile');
-Route::resource('kepalasurat', KepalasuratController::class);
-Route::get('/kepalasurat/create', [KepalasuratController::class, 'create'])->name('kepalasurat.create');
-Route::get('/namatandatangan', [NamatandatanganController::class, 'index'])->name('namatandatangan.index');
+use App\Http\Controllers\UserController;

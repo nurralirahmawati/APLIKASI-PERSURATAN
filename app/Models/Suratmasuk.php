@@ -5,25 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Suratmasuk extends Model
+class SuratMasuk extends Model
 {
     use HasFactory;
 
-    protected $table = 'Suratmasuk';
+    protected $table = 'surat_masuk';
 
     protected $fillable = [
-        'tanggal',
-        'no_surat',
-        'asal_surat',
-        'perihal',
-        'disp1',
-        'disp2',
-        'namatandatangan_id',
-        'image',
-    ];
 
-    public function pengirim()
-    {
-        return $this->belongsTo(Kepalasurat::class, 'pengirim_id');
+    'id_kop',
+    'tanggal',
+    'no_surat',
+    'asal_surat',
+    'perihal',
+    'disp1',
+    'disp2',
+    'id_tandatangan',
+    'image',
+    ];
+    public function kepalasurat(){
+        return $this->belongsTo(KepalaSurat::class, 'id_kop', 'id');
+    }
+    public function tandatgn(){
+        return $this->belongsTo(NamaTandatgn::class, 'id_tandatangan', 'id');
     }
 }
