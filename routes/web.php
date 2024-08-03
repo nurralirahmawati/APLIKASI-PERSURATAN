@@ -10,5 +10,5 @@ Route::resource('/kepalasurat', \App\Http\Controllers\KepalaSuratController::cla
 Route::resource('/namatandatgn', \App\Http\Controllers\NamaTandaTgnController::class);
 Route::resource('/suratkeluar', \App\Http\Controllers\SuratKeluarController::class);
 Route::resource('/suratmasuk', \App\Http\Controllers\SuratMasukController::class);
-
+Route::resource('/login', \App\Http\Controllers\LoginController::class);
 use App\Http\Controllers\UserController;
